@@ -1,0 +1,128 @@
+{
+  "kind": "spec_vs_diff_report",
+  "version": "1.0",
+  "generatedAt": "2026-02-13T16:04:32.976Z",
+  "summary": "Diff adds a new Motoko backend actor plus a React/TanStack Router + React Query frontend with Dashboard/Log/Insights/Settings pages, theme styling, and generated-asset references. Core CRUD and persistence requirements appear only partially implemented based on the visible diff; several unrequested auth/access-control and profile features were added, and some changes touch paths called out as immutable in the BuildRequest constraints.",
+  "missing_requirements": [
+    {
+      "id": "REQ-2",
+      "requirement": "Persist per-user caffeine entries, presets, and settings across canister upgrades/reloads using stable storage as appropriate for Motoko.",
+      "reason": "The backend uses in-memory Maps (e.g., `userDataMap = Map.empty<Principal, UserData>()`) with no visible `stable` variables or pre/post-upgrade hooks in the truncated `backend/main.mo` portion shown, so persistence across upgrades/redeploys is not evidenced.",
+      "evidence": [
+        "backend/main.mo"
+      ]
+    },
+    {
+      "id": "REQ-2",
+      "requirement": "Backend exposes full CRUD + listing APIs: list entries (optionally date range), add entry, update entry, delete entry; list presets, add preset, update preset, delete preset; get settings, update settings.",
+      "reason": "Only `addCaffeineEntry` and `deleteCaffeineEntry` are visible for entries; presets management is truncated and update/delete/list methods are not evidenced; settings read/update methods are not evidenced; frontend calls `actor.getUserData()` and `actor.updateUserSettings(...)` but corresponding backend methods are not shown in the provided diff summary.",
+      "evidence": [
+        "backend/main.mo",
+        "frontend/src/hooks/useQueries.ts"
+      ]
+    },
+    {
+      "id": "REQ-3",
+      "requirement": "All mutations (add/edit/delete) for entries and presets show progress and handle errors with an on-screen message.",
+      "reason": "Entry add/delete and settings update include toasts and pending states, but there is no visible edit-entry flow, and preset update/delete flows are not present (PresetManager only adds). Without these mutation hooks/UI, the full set of required mutation UX is incomplete.",
+      "evidence": [
+        "frontend/src/hooks/useQueries.ts",
+        "frontend/src/pages/LogPage.tsx",
+        "frontend/src/components/caffeine/PresetManager.tsx"
+      ]
+    },
+    {
+      "id": "REQ-1",
+      "requirement": "User can edit an existing caffeine entry from the Log page.",
+      "reason": "Log page shows delete handling (`useDeleteCaffeineEntry`) but no visible edit UI or update mutation hook for entries.",
+      "evidence": [
+        "frontend/src/pages/LogPage.tsx",
+        "frontend/src/hooks/useQueries.ts"
+      ]
+    },
+    {
+      "id": "REQ-1",
+      "requirement": "Settings page allows managing a small list of drink presets (name + mg), including more than just adding (i.e., management such as edit/delete).",
+      "reason": "PresetManager UI only supports adding a preset and listing existing presets; no edit/delete controls or corresponding React Query mutations are shown.",
+      "evidence": [
+        "frontend/src/components/caffeine/PresetManager.tsx",
+        "frontend/src/hooks/useQueries.ts"
+      ]
+    },
+    {
+      "id": "REQ-1",
+      "requirement": "Dashboard shows computed total caffeine for the selected day (default: today).",
+      "reason": "Dashboard computes totals for today only; there is no UI or logic to select a different day in the visible code.",
+      "evidence": [
+        "frontend/src/pages/DashboardPage.tsx"
+      ]
+    }
+  ],
+  "hallucinated_features": [
+    {
+      "description": "User profile system (profile setup dialog, save/get profile APIs, welcome message)",
+      "reason": "BuildRequest does not ask for user profiles or requiring a profile name before using the tracker; it only requires Internet Identity authentication and per-user caffeine tracking data.",
+      "evidence": [
+        "backend/main.mo",
+        "frontend/src/components/auth/ProfileSetupDialog.tsx",
+        "frontend/src/components/auth/RequireAuth.tsx",
+        "frontend/src/components/app/AppShell.tsx",
+        "frontend/src/hooks/useQueries.ts"
+      ]
+    },
+    {
+      "description": "Custom access control/admin-secret initialization via URL parameter (`caffeineAdminToken`) and `_initializeAccessControlWithSecret` call",
+      "reason": "BuildRequest requires Internet Identity auth but does not request an admin token system or extra access-control initialization based on a secret URL parameter.",
+      "evidence": [
+        "frontend/src/hooks/useActor.ts",
+        "frontend/src/utils/urlParams.ts",
+        "backend/main.mo"
+      ]
+    },
+    {
+      "description": "Social/footer referral links and social icon buttons (X/Facebook) in the app shell footer",
+      "reason": "Not requested by the BuildRequest and unrelated to caffeine tracking requirements.",
+      "evidence": [
+        "frontend/src/components/app/AppShell.tsx"
+      ]
+    },
+    {
+      "description": "Edits to paths called out as immutable in constraints (hooks/useInternetIdentity.ts(x), hooks/useActor.ts, main.tsx)",
+      "reason": "BuildRequest constraints explicitly say not to edit files under these immutable frontend paths; diff shows added files at those exact paths (cannot confirm if they replaced existing files, but changes in these locations are evidenced).",
+      "evidence": [
+        "frontend/src/hooks/useInternetIdentity.ts",
+        "frontend/src/hooks/useActor.ts",
+        "frontend/src/main.tsx"
+      ]
+    }
+  ],
+  "confidence": 0.68,
+  "changed_files": [
+    "all_files_summary.json",
+    "backend/main.mo",
+    "frontend-file-summaries.txt",
+    "frontend/index.css",
+    "frontend/index.html",
+    "frontend/src/App.tsx",
+    "frontend/src/components/app/AppShell.tsx",
+    "frontend/src/components/app/QueryState.tsx",
+    "frontend/src/components/auth/LoginButton.tsx",
+    "frontend/src/components/auth/ProfileSetupDialog.tsx",
+    "frontend/src/components/auth/RequireAuth.tsx",
+    "frontend/src/components/caffeine/EntryFormDialog.tsx",
+    "frontend/src/components/caffeine/PresetManager.tsx",
+    "frontend/src/components/caffeine/TrendChart7d.tsx",
+    "frontend/src/hooks/useActor.ts",
+    "frontend/src/hooks/useInternetIdentity.ts",
+    "frontend/src/hooks/useQueries.ts",
+    "frontend/src/index.css",
+    "frontend/src/main.tsx",
+    "frontend/src/pages/DashboardPage.tsx",
+    "frontend/src/pages/InsightsPage.tsx",
+    "frontend/src/pages/LogPage.tsx",
+    "frontend/src/pages/SettingsPage.tsx",
+    "frontend/src/utils/urlParams.ts",
+    "frontend/tailwind.config.js",
+    "project_state.json"
+  ]
+}

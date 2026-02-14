@@ -1,0 +1,209 @@
+{
+  "kind": "implementation_plan",
+  "version": "1.0",
+  "title": "Caffeine Intake Tracker (Frontend)",
+  "requirements": [
+    {
+      "id": "REQ-1",
+      "summary": "Build the core authenticated caffeine-tracker UX with Dashboard, Log (edit/delete), Insights (7-day chart), and Settings (daily limit + presets) connected via consistent navigation.",
+      "acceptanceCriteria": [
+        "App has Dashboard, Log, Insights, and Settings views reachable via a consistent navigation UI.",
+        "Dashboard shows computed total caffeine for the selected day (default: today) and remaining amount based on the saved daily limit.",
+        "User can add a caffeine entry with at least: drink name, caffeine mg, timestamp; entries appear in the Log page.",
+        "User can edit and delete an existing entry from the Log page.",
+        "Insights page displays a 7-day chart of total mg/day (basic bar or line chart is acceptable).",
+        "Settings allows updating daily limit (mg) and managing a small list of drink presets (name + mg) used by quick-add.",
+        "All user-facing text is in English."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/index.css",
+          "operation": "create",
+          "description": "Create src-level stylesheet entry to satisfy frontend/src/main.tsx import; re-export/compose base Tailwind styles from frontend/index.css and add any small app-level base styling needed for the tracker UI (English-only text)."
+        },
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "create",
+          "description": "Create the root application component that wires up authenticated navigation and routes for Dashboard, Log, Insights, and Settings. Use the authorization component’s frontend guidance to require login before showing any application data. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/app/AppShell.tsx",
+          "operation": "create",
+          "description": "Create a shared layout (header + content container) with consistent navigation (tabs/links) across pages; integrate login/logout control and reserve space for user name display from the authorization flow. Use shadcn-ui components to provide card-based layout, buttons, inputs, and consistent UI primitives. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/auth/LoginButton.tsx",
+          "operation": "create",
+          "description": "Add a login/logout button using the existing Internet Identity hook and clear React Query cache on logout per the authorization component guidance. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/auth/ProfileSetupDialog.tsx",
+          "operation": "create",
+          "description": "Implement the first-login profile setup modal to ask for a human-readable name using getCallerUserProfile/saveCallerUserProfile per the authorization component guidance, avoiding modal flash by respecting actor loading. Use shadcn-ui Dialog/Form primitives. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/auth/RequireAuth.tsx",
+          "operation": "create",
+          "description": "Create an auth guard wrapper that blocks all tracker pages when not authenticated (showing a login prompt screen) and triggers ProfileSetupDialog when the authenticated user has no profile. Follow the authorization component guidance. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/pages/DashboardPage.tsx",
+          "operation": "create",
+          "description": "Implement Dashboard page: show today’s total caffeine, remaining to daily limit, date selector (default today), and quick-add control (select preset or custom drink, amount mg, timestamp now). Use shadcn-ui Card/Button/Input/Select components. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/pages/LogPage.tsx",
+          "operation": "create",
+          "description": "Implement Log page listing recent entries with edit/delete actions and an add-entry control; include empty state when no entries are present. Use shadcn-ui table/list + dialog components for editing. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/pages/InsightsPage.tsx",
+          "operation": "create",
+          "description": "Implement Insights page with a simple 7-day trend chart (bar or line) derived from entries (mg/day) and clearly labeled axes/values in English; keep it responsive. Use shadcn-ui Card for framing. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/pages/SettingsPage.tsx",
+          "operation": "create",
+          "description": "Implement Settings page to update daily caffeine limit (mg) and manage drink presets (create/update/delete). Use shadcn-ui form controls and dialogs for preset management. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/caffeine/EntryFormDialog.tsx",
+          "operation": "create",
+          "description": "Reusable add/edit entry dialog (drink name, mg, timestamp) used by Dashboard quick-add (prefilled) and Log editing. Use shadcn-ui Dialog/Input/Button and basic validation messaging. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/caffeine/PresetManager.tsx",
+          "operation": "create",
+          "description": "Reusable presets manager UI (list + add/edit/delete) for Settings; designed to integrate with React Query mutations. Use shadcn-ui components. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/caffeine/TrendChart7d.tsx",
+          "operation": "create",
+          "description": "Create a small chart component (SVG/canvas) for 7-day totals; accepts pre-aggregated daily totals and renders a basic bar/line chart with warm theme styling and responsive sizing."
+        }
+      ]
+    },
+    {
+      "id": "REQ-3",
+      "summary": "Connect UI to backend via React Query for loading/mutating entries, presets, and settings with loading/empty/error states and immediate UI refresh after mutations.",
+      "acceptanceCriteria": [
+        "All reads are performed via React Query with visible loading indicators.",
+        "All mutations (add/edit/delete) show progress and handle errors with an on-screen message.",
+        "After any mutation, the relevant lists/totals/charts update without requiring a manual page refresh."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/features/caffeine/backendClient.ts",
+          "operation": "create",
+          "description": "Create a thin frontend client that calls backend capabilities through useActor(). For methods not present in current TypeScript typings, call via safe (actor as any) wrappers so the frontend can compile while backend work lands; centralize error normalization for on-screen messages."
+        },
+        {
+          "path": "frontend/src/features/caffeine/queries.ts",
+          "operation": "create",
+          "description": "Add React Query hooks for reading and mutating user data (getUserData, add/update/delete entry, add/update/delete preset, get/update settings). Ensure query keys are consistent and invalidate/refetch relevant queries after mutations."
+        },
+        {
+          "path": "frontend/src/components/app/QueryState.tsx",
+          "operation": "create",
+          "description": "Create shared UI helpers for loading, error, and empty states to keep behavior consistent across pages; display human-readable English error messages, including authorization failures. Use shadcn-ui Alert/Skeleton where appropriate. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/pages/DashboardPage.tsx",
+          "operation": "modify",
+          "description": "Wire Dashboard data to React Query hooks: show loading indicator, compute totals/remaining from queried entries + settings, and perform quick-add mutations with progress and error display; invalidate/refetch data after mutation."
+        },
+        {
+          "path": "frontend/src/pages/LogPage.tsx",
+          "operation": "modify",
+          "description": "Wire Log list to React Query hooks with loading/empty/error states; connect edit/delete mutations with progress UI and automatic refresh (invalidate/refetch or optimistic updates)."
+        },
+        {
+          "path": "frontend/src/pages/InsightsPage.tsx",
+          "operation": "modify",
+          "description": "Load entries/settings via React Query and derive 7-day totals; show loading/empty/error states and update chart automatically when entries change."
+        },
+        {
+          "path": "frontend/src/pages/SettingsPage.tsx",
+          "operation": "modify",
+          "description": "Wire daily limit and presets to React Query hooks; show mutation progress, handle errors, and update dependent views by invalidating/refetching shared user-data queries after updates."
+        },
+        {
+          "path": "frontend/src/components/auth/LoginButton.tsx",
+          "operation": "modify",
+          "description": "Ensure React Query cache is cleared on logout (queryClient.clear()) per the authorization component guidance so per-user data never leaks between sessions. Verify the component's usage instructions before implementing."
+        }
+      ]
+    },
+    {
+      "id": "REQ-4",
+      "summary": "Apply a warm espresso/cream visual theme with clean typography, responsive card-based layout, and clear interactive states across the app.",
+      "acceptanceCriteria": [
+        "App uses a consistent warm (espresso/cream) theme across navigation, cards, forms, and charts.",
+        "Layout is responsive and usable on mobile and desktop.",
+        "Interactive elements (buttons/inputs) have clear hover/focus states."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/index.css",
+          "operation": "modify",
+          "description": "Adjust CSS variables (background/foreground/primary/secondary/accent/chart colors) to a warm espresso/cream palette while preserving the existing Tailwind + shadcn-ui variable system; ensure focus rings and hover states remain visible."
+        },
+        {
+          "path": "frontend/tailwind.config.js",
+          "operation": "modify",
+          "description": "Extend theme tokens as needed for warm brand accents (using existing CSS variable approach), and ensure content paths include all new app files so Tailwind classes compile."
+        },
+        {
+          "path": "frontend/src/components/app/AppShell.tsx",
+          "operation": "modify",
+          "description": "Apply consistent responsive layout: header/navigation styling, card-based content spacing, and typography hierarchy across pages using Tailwind utilities and shadcn-ui components. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/caffeine/TrendChart7d.tsx",
+          "operation": "modify",
+          "description": "Style the chart to match the warm theme (espresso/cream palette, readable labels, responsive sizing) and ensure it remains legible on mobile and desktop."
+        }
+      ]
+    },
+    {
+      "id": "REQ-5",
+      "summary": "Add generated branding and empty-state images under frontend/public/assets/generated and reference them from the UI (header logo + no-entries illustration at minimum).",
+      "acceptanceCriteria": [
+        "Generated images exist in frontend/public/assets/generated and are loaded via static paths from the frontend.",
+        "At minimum: a small logo is shown in the app header/navigation, and an empty-state illustration is shown when there are no entries."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/public/assets/generated/caffeine-logo.dim_512x512.png",
+          "operation": "create",
+          "description": "Add the generated logo asset at the exact path frontend/public/assets/generated/caffeine-logo.dim_512x512.png and ensure it is referenced by static path from the frontend."
+        },
+        {
+          "path": "frontend/public/assets/generated/caffeine-hero.dim_1600x900.png",
+          "operation": "create",
+          "description": "Add the generated hero illustration at the exact path frontend/public/assets/generated/caffeine-hero.dim_1600x900.png for use within an existing required page (e.g., Dashboard header section)."
+        },
+        {
+          "path": "frontend/public/assets/generated/caffeine-empty-state.dim_1200x800.png",
+          "operation": "create",
+          "description": "Add the generated empty-state illustration at the exact path frontend/public/assets/generated/caffeine-empty-state.dim_1200x800.png and ensure it is referenced by static path from the frontend."
+        },
+        {
+          "path": "frontend/src/components/app/AppShell.tsx",
+          "operation": "modify",
+          "description": "Reference frontend/public/assets/generated/caffeine-logo.dim_512x512.png in the header/navigation branding area via a static asset path; ensure it renders at an appropriate small size and has accessible alt text in English."
+        },
+        {
+          "path": "frontend/src/pages/DashboardPage.tsx",
+          "operation": "modify",
+          "description": "Reference frontend/public/assets/generated/caffeine-hero.dim_1600x900.png within the Dashboard (no new top-level routes) to reinforce branding while keeping layout responsive."
+        },
+        {
+          "path": "frontend/src/pages/LogPage.tsx",
+          "operation": "modify",
+          "description": "When there are no entries, show an empty state that includes frontend/public/assets/generated/caffeine-empty-state.dim_1200x800.png and English guidance text for adding the first entry."
+        }
+      ]
+    }
+  ]
+}

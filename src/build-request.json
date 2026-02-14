@@ -1,0 +1,128 @@
+{
+  "kind": "build_request",
+  "title": "Build a Caffeine Intake Tracker App",
+  "priority": "normal",
+  "requirements": [
+    {
+      "id": "REQ-1",
+      "text": "Create the core app UX for a personal caffeine tracker with the following pages: (1) Dashboard showing today’s total caffeine (mg), remaining to daily limit, and a quick-add control; (2) Log page listing recent intake entries with edit/delete; (3) Insights page showing a simple 7-day trend chart; (4) Settings page to configure a daily caffeine limit (mg) and default drink presets.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ],
+        "quotes": [
+          "Caffeine app to create"
+        ]
+      },
+      "acceptanceCriteria": [
+        "App has Dashboard, Log, Insights, and Settings views reachable via a consistent navigation UI.",
+        "Dashboard shows computed total caffeine for the selected day (default: today) and remaining amount based on the saved daily limit.",
+        "User can add a caffeine entry with at least: drink name, caffeine mg, timestamp; entries appear in the Log page.",
+        "User can edit and delete an existing entry from the Log page.",
+        "Insights page displays a 7-day chart of total mg/day (basic bar or line chart is acceptable).",
+        "Settings allows updating daily limit (mg) and managing a small list of drink presets (name + mg) used by quick-add.",
+        "All user-facing text is in English."
+      ]
+    },
+    {
+      "id": "REQ-2",
+      "text": "Implement authenticated, per-user data storage for caffeine tracking using Internet Identity principal as the user key. Persist: caffeine intake entries, drink presets, and user settings (daily limit). Provide backend methods to create/read/update/delete entries and presets and to read/update settings.",
+      "target": "backend",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ],
+        "quotes": [
+          "Caffeine app to create"
+        ]
+      },
+      "acceptanceCriteria": [
+        "All stored data is scoped to the authenticated caller’s principal; users cannot access each other’s data.",
+        "Backend exposes query/update methods to: list entries (with optional date range), add entry, update entry, delete entry; list presets, add preset, update preset, delete preset; get settings, update settings.",
+        "Data persists across page reloads and canister calls (stable storage as appropriate for Motoko)."
+      ]
+    },
+    {
+      "id": "REQ-3",
+      "text": "Connect the frontend to the backend using React Query for loading/mutating entries, presets, and settings, including loading states, empty states, and error handling. Ensure the UI updates immediately after mutations (invalidate/refetch or optimistic updates).",
+      "target": "both",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ],
+        "quotes": [
+          "Caffeine app to create"
+        ]
+      },
+      "acceptanceCriteria": [
+        "All reads are performed via React Query with visible loading indicators.",
+        "All mutations (add/edit/delete) show progress and handle errors with an on-screen message.",
+        "After any mutation, the relevant lists/totals/charts update without requiring a manual page refresh."
+      ]
+    },
+    {
+      "id": "REQ-4",
+      "text": "Apply a coherent visual theme suitable for a caffeine/coffee wellness tracker: warm espresso/cream palette, clean typography, and card-based layout with clear hierarchy. Keep styling consistent across all pages and components.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ],
+        "quotes": [
+          "Caffeine app to create"
+        ]
+      },
+      "acceptanceCriteria": [
+        "App uses a consistent warm (espresso/cream) theme across navigation, cards, forms, and charts.",
+        "Layout is responsive and usable on mobile and desktop.",
+        "Interactive elements (buttons/inputs) have clear hover/focus states."
+      ]
+    },
+    {
+      "id": "REQ-5",
+      "text": "Add and use generated static image assets for the app’s branding and empty states. Store them under frontend/public/assets/generated and reference them directly from the frontend.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ],
+        "quotes": [
+          "Caffeine app to create"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Generated images exist in frontend/public/assets/generated and are loaded via static paths from the frontend.",
+        "At minimum: a small logo is shown in the app header/navigation, and an empty-state illustration is shown when there are no entries."
+      ]
+    }
+  ],
+  "constraints": [
+    "Backend must remain a single Motoko actor (all logic in backend/main.mo).",
+    "Do not edit files under frontend immutable paths (e.g., frontend/src/hooks/useInternetIdentity.ts(x), frontend/src/hooks/useActor.ts, frontend/src/main.tsx, frontend/src/components/ui/*); compose them from app code instead.",
+    "Use Internet Identity for authentication; no third-party auth providers."
+  ],
+  "nonGoals": [
+    "No external health integrations (Apple Health, Google Fit) or wearable integrations.",
+    "No push notifications, email, SMS, or real-time WebSocket features.",
+    "No external databases or third-party analytics."
+  ],
+  "imageRequirements": {
+    "required": [
+      "Minimal coffee-bean + cup logo mark, flat vector style, warm espresso/cream palette (caffeine-logo.dim_512x512.png)",
+      "Cozy coffee-themed hero illustration with abstract shapes, no text, warm palette (caffeine-hero.dim_1600x900.png)",
+      "Empty state illustration of a small cup and checklist, minimal flat style, warm palette (caffeine-empty-state.dim_1200x800.png)"
+    ],
+    "edits": []
+  },
+  "userProfileUpdate": {
+    "goalsToAdd": [],
+    "goalsToRemove": [],
+    "preferencesToAdd": [],
+    "preferencesToRemove": [],
+    "miscToAdd": [],
+    "miscToRemove": [],
+    "fieldsToSet": {},
+    "fieldsToDelete": []
+  }
+}
