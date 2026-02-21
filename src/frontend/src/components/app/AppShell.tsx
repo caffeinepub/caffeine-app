@@ -89,13 +89,13 @@ export default function AppShell({ children }: AppShellProps) {
                 caffeine.ai
               </a>
             </p>
-            <div className="flex items-center gap-3">
-              <a href="#" className="text-muted-foreground hover:text-foreground transition-colors">
+            <div className="flex items-center gap-3" role="presentation">
+              <span className="text-muted-foreground" aria-hidden="true">
                 <SiX className="h-4 w-4" />
-              </a>
-              <a href="#" className="text-muted-foreground hover:text-foreground transition-colors">
+              </span>
+              <span className="text-muted-foreground" aria-hidden="true">
                 <SiFacebook className="h-4 w-4" />
-              </a>
+              </span>
             </div>
           </div>
         </div>

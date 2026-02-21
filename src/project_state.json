@@ -1,41 +1,32 @@
 {
   "schemaVersion": "1.0.0",
   "projectStateVersion": 3,
-  "summary": "Create a Caffeine app",
+  "summary": "New project",
   "architectural_notes": [],
   "known_issues": [],
   "isFixRequest": false,
-  "imageRequirements": "## Required Images\n- Minimal coffee-bean + cup logo mark, flat vector style, warm espresso/cream palette (caffeine-logo.dim_512x512.png)\n- Cozy coffee-themed hero illustration with abstract shapes, no text, warm palette (caffeine-hero.dim_1600x900.png)\n- Empty state illustration of a small cup and checklist, minimal flat style, warm palette (caffeine-empty-state.dim_1200x800.png)",
   "existing_features": [
     {
-      "id": "feature-create-the-core-app-ux-for-a-personal-caffeine-tracker-with-the-following-pages-1-dashboard-showing-today-s-total-caffeine-mg-remaining-to-daily-limit-and-a-quick-add-control-2-log-page-listing-recent-intake-entries-with-edit-delete-3-insights-page-showing-a-simple-7-day-trend-chart-4-settings-page-to-configure-a-daily-caffeine-limit-mg-and-default-drink-presets",
-      "title": "Create the core app UX for a personal caffeine tracker with the following pages: (1) Dashboard showing today’s total caffeine (mg), remaining to daily limit, and a quick-add control; (2) Log page listing recent intake entries with edit/delete; (3) Insights page showing a simple 7-day trend chart; (4) Settings page to configure a daily caffeine limit (mg) and default drink presets.",
+      "id": "feature-make-the-log-page-empty-state-primary-action-actually-help-the-user-add-their-first-entry-by-navigating-to-the-dashboard-and-automatically-opening-the-add-entry-dialog",
+      "title": "Make the Log page empty-state primary action actually help the user add their first entry by navigating to the Dashboard and automatically opening the Add Entry dialog.",
       "reqIds": [
         "REQ-1"
       ],
       "version": 1
     },
     {
-      "id": "feature-connect-the-frontend-to-the-backend-using-react-query-for-loading-mutating-entries-presets-and-settings-including-loading-states-empty-states-and-error-handling-ensure-the-ui-updates-immediately-after-mutations-invalidate-refetch-or-optimistic-updates",
-      "title": "Connect the frontend to the backend using React Query for loading/mutating entries, presets, and settings, including loading states, empty states, and error handling. Ensure the UI updates immediately after mutations (invalidate/refetch or optimistic updates).",
+      "id": "feature-improve-the-dashboard-s-readability-by-adding-a-clear-visual-indicator-of-daily-limit-usage-e-g-a-progress-bar-or-meter-and-ensuring-the-over-limit-state-is-visually-distinct-and-accessible",
+      "title": "Improve the Dashboard’s readability by adding a clear visual indicator of daily limit usage (e.g., a progress bar or meter) and ensuring the over-limit state is visually distinct and accessible.",
+      "reqIds": [
+        "REQ-2"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-clean-up-footer-social-icons-so-they-are-not-dead-links-replace-placeholder-href-links-with-a-non-clickable-disabled-presentation-or-remove-them-while-keeping-the-footer-layout-visually-balanced",
+      "title": "Clean up footer social icons so they are not dead links: replace placeholder href=\"#\" links with a non-clickable/disabled presentation or remove them, while keeping the footer layout visually balanced.",
       "reqIds": [
         "REQ-3"
-      ],
-      "version": 1
-    },
-    {
-      "id": "feature-apply-a-coherent-visual-theme-suitable-for-a-caffeine-coffee-wellness-tracker-warm-espresso-cream-palette-clean-typography-and-card-based-layout-with-clear-hierarchy-keep-styling-consistent-across-all-pages-and-components",
-      "title": "Apply a coherent visual theme suitable for a caffeine/coffee wellness tracker: warm espresso/cream palette, clean typography, and card-based layout with clear hierarchy. Keep styling consistent across all pages and components.",
-      "reqIds": [
-        "REQ-4"
-      ],
-      "version": 1
-    },
-    {
-      "id": "feature-add-and-use-generated-static-image-assets-for-the-app-s-branding-and-empty-states-store-them-under-frontend-public-assets-generated-and-reference-them-directly-from-the-frontend",
-      "title": "Add and use generated static image assets for the app’s branding and empty states. Store them under frontend/public/assets/generated and reference them directly from the frontend.",
-      "reqIds": [
-        "REQ-5"
       ],
       "version": 1
     }
@@ -43,21 +34,12 @@
   "new_feature_requests": [
     {
       "id": "AR-1",
-      "summary": "Build a Caffeine app",
+      "summary": "Improve the app a little bit (general enhancements/updates requested by user)",
       "reqIds": [],
-      "status": "pending"
-    },
-    {
-      "id": "AR-3",
-      "summary": "Implement authenticated, per-user data storage for caffeine tracking using Internet Identity principal as the user key. Persist: caffeine intake entries, drink presets, and user settings (daily limit). Provide backend methods to create/read/update/delete entries and presets and to read/update settings.",
-      "reqIds": [
-        "REQ-2"
-      ],
       "status": "pending"
     }
   ],
-  "gameProjectType": "none",
-  "projectName": "Caffeine app",
+  "projectName": "Polish UX: better empty-state actions, dashboard progress indicator, and footer link cleanup",
   "clarification_mode": "instant",
   "clarification_rounds": 0
 }

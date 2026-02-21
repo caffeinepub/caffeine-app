@@ -2,22 +2,12 @@
   "kind": "feature_evidence_report",
   "features": [
     {
-      "featureId": "feature-create-the-core-app-ux-for-a-personal-caffeine-tracker-with-the-following-pages-1-dashboard-showing-today-s-total-caffeine-mg-remaining-to-daily-limit-and-a-quick-add-control-2-log-page-listing-recent-intake-entries-with-edit-delete-3-insights-page-showing-a-simple-7-day-trend-chart-4-settings-page-to-configure-a-daily-caffeine-limit-mg-and-default-drink-presets",
-      "featureTitle": "Create the core app UX for a personal caffeine tracker with the following pages: (1) Dashboard showing today’s total caffeine (mg), remaining to daily limit, and a quick-add control; (2) Log page listing recent intake entries with edit/delete; (3) Insights page showing a simple 7-day trend chart; (4) Settings page to configure a daily caffeine limit (mg) and default drink presets.",
+      "featureId": "feature-make-the-log-page-empty-state-primary-action-actually-help-the-user-add-their-first-entry-by-navigating-to-the-dashboard-and-automatically-opening-the-add-entry-dialog",
+      "featureTitle": "Make the Log page empty-state primary action actually help the user add their first entry by navigating to the Dashboard and automatically opening the Add Entry dialog.",
       "files": [
-        "frontend/src/App.tsx",
-        "frontend/src/components/app/AppShell.tsx",
-        "frontend/src/components/auth/LoginButton.tsx",
-        "frontend/src/components/auth/ProfileSetupDialog.tsx",
-        "frontend/src/components/auth/RequireAuth.tsx",
-        "frontend/src/components/caffeine/EntryFormDialog.tsx",
-        "frontend/src/components/caffeine/PresetManager.tsx",
-        "frontend/src/components/caffeine/TrendChart7d.tsx",
-        "frontend/src/index.css",
         "frontend/src/pages/DashboardPage.tsx",
-        "frontend/src/pages/InsightsPage.tsx",
         "frontend/src/pages/LogPage.tsx",
-        "frontend/src/pages/SettingsPage.tsx"
+        "frontend/src/utils/urlParams.ts"
       ],
       "components": [
         "authorization@4.0.0",
@@ -33,15 +23,29 @@
       "confidence": "high"
     },
     {
-      "featureId": "feature-connect-the-frontend-to-the-backend-using-react-query-for-loading-mutating-entries-presets-and-settings-including-loading-states-empty-states-and-error-handling-ensure-the-ui-updates-immediately-after-mutations-invalidate-refetch-or-optimistic-updates",
-      "featureTitle": "Connect the frontend to the backend using React Query for loading/mutating entries, presets, and settings, including loading states, empty states, and error handling. Ensure the UI updates immediately after mutations (invalidate/refetch or optimistic updates).",
+      "featureId": "feature-improve-the-dashboard-s-readability-by-adding-a-clear-visual-indicator-of-daily-limit-usage-e-g-a-progress-bar-or-meter-and-ensuring-the-over-limit-state-is-visually-distinct-and-accessible",
+      "featureTitle": "Improve the Dashboard’s readability by adding a clear visual indicator of daily limit usage (e.g., a progress bar or meter) and ensuring the over-limit state is visually distinct and accessible.",
       "files": [
-        "frontend/src/components/app/QueryState.tsx",
-        "frontend/src/components/auth/LoginButton.tsx",
-        "frontend/src/pages/DashboardPage.tsx",
-        "frontend/src/pages/InsightsPage.tsx",
-        "frontend/src/pages/LogPage.tsx",
-        "frontend/src/pages/SettingsPage.tsx"
+        "frontend/src/pages/DashboardPage.tsx"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-2"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-clean-up-footer-social-icons-so-they-are-not-dead-links-replace-placeholder-href-links-with-a-non-clickable-disabled-presentation-or-remove-them-while-keeping-the-footer-layout-visually-balanced",
+      "featureTitle": "Clean up footer social icons so they are not dead links: replace placeholder href=\"#\" links with a non-clickable/disabled presentation or remove them, while keeping the footer layout visually balanced.",
+      "files": [
+        "frontend/src/components/app/AppShell.tsx"
       ],
       "components": [
         "authorization@4.0.0",
@@ -53,49 +57,6 @@
       ],
       "testIds": [
         "REQ-3"
-      ],
-      "confidence": "high"
-    },
-    {
-      "featureId": "feature-apply-a-coherent-visual-theme-suitable-for-a-caffeine-coffee-wellness-tracker-warm-espresso-cream-palette-clean-typography-and-card-based-layout-with-clear-hierarchy-keep-styling-consistent-across-all-pages-and-components",
-      "featureTitle": "Apply a coherent visual theme suitable for a caffeine/coffee wellness tracker: warm espresso/cream palette, clean typography, and card-based layout with clear hierarchy. Keep styling consistent across all pages and components.",
-      "files": [
-        "frontend/index.css",
-        "frontend/src/components/app/AppShell.tsx",
-        "frontend/src/components/caffeine/TrendChart7d.tsx",
-        "frontend/tailwind.config.js"
-      ],
-      "components": [
-        "authorization@4.0.0",
-        "core-infrastructure@1.0.2",
-        "shadcn-ui@1.0.0",
-        "build-template-react@1.0.0",
-        "initial-app@1.0.0",
-        "github-export-icp-cli@1.0.0"
-      ],
-      "testIds": [
-        "REQ-4"
-      ],
-      "confidence": "high"
-    },
-    {
-      "featureId": "feature-add-and-use-generated-static-image-assets-for-the-app-s-branding-and-empty-states-store-them-under-frontend-public-assets-generated-and-reference-them-directly-from-the-frontend",
-      "featureTitle": "Add and use generated static image assets for the app’s branding and empty states. Store them under frontend/public/assets/generated and reference them directly from the frontend.",
-      "files": [
-        "frontend/src/components/app/AppShell.tsx",
-        "frontend/src/pages/DashboardPage.tsx",
-        "frontend/src/pages/LogPage.tsx"
-      ],
-      "components": [
-        "authorization@4.0.0",
-        "core-infrastructure@1.0.2",
-        "shadcn-ui@1.0.0",
-        "build-template-react@1.0.0",
-        "initial-app@1.0.0",
-        "github-export-icp-cli@1.0.0"
-      ],
-      "testIds": [
-        "REQ-5"
       ],
       "confidence": "high"
     }

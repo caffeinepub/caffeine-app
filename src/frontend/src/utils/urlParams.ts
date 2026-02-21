@@ -206,3 +206,30 @@ export function getSecretFromHash(paramName: string): string | null {
 export function getSecretParameter(paramName: string): string | null {
     return getSecretFromHash(paramName);
 }
+
+/**
+ * Reads a URL parameter once and immediately clears it from the URL
+ * Useful for one-time signals like "openEntry=true" that should not persist in history
+ *
+ * @param paramName - The name of the parameter to read and clear
+ * @returns The parameter value if found, null otherwise
+ */
+export function getAndClearUrlParameter(paramName: string): string | null {
+    const value = getUrlParameter(paramName);
+    
+    if (value !== null && window.history.replaceState) {
+        // Clear from regular query string
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.has(paramName)) {
+            urlParams.delete(paramName);
+            const newSearch = urlParams.toString();
+            const newUrl = window.location.pathname + (newSearch ? '?' + newSearch : '') + window.location.hash;
+            window.history.replaceState(null, '', newUrl);
+        }
+        
+        // Also clear from hash if present
+        clearParamFromHash(paramName);
+    }
+    
+    return value;
+}

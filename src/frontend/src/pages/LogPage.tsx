@@ -4,6 +4,7 @@ import { Plus, Trash2, Coffee } from 'lucide-react';
 import { useGetUserData, useDeleteCaffeineEntry } from '../hooks/useQueries';
 import { LoadingState, ErrorState, EmptyState } from '../components/app/QueryState';
 import { toast } from 'sonner';
+import { useNavigate } from '@tanstack/react-router';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -19,6 +20,7 @@ import {
 export default function LogPage() {
   const { data: userData, isLoading, error } = useGetUserData();
   const deleteEntry = useDeleteCaffeineEntry();
+  const navigate = useNavigate();
 
   const handleDelete = async (entryId: bigint) => {
     try {
@@ -28,6 +30,10 @@ export default function LogPage() {
       toast.error('Failed to delete entry');
       console.error(error);
     }
+  };
+
+  const handleAddFirstEntry = () => {
+    navigate({ to: '/', search: { openEntry: 'true' } });
   };
 
   if (isLoading) return <LoadingState message="Loading your entries..." />;
@@ -72,7 +78,7 @@ export default function LogPage() {
               title="No Entries Yet"
               description="Start tracking your caffeine intake by adding your first entry. Click the button below or use the quick-add feature on the Dashboard."
               action={
-                <Button className="gap-2">
+                <Button className="gap-2" onClick={handleAddFirstEntry}>
                   <Plus className="h-4 w-4" />
                   Add Your First Entry
                 </Button>

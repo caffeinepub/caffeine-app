@@ -6,13 +6,14 @@
   "frontend/src/components/auth/LoginButton.tsx": "Login/logout button component using Internet Identity with query cache clearing on logout.",
   "frontend/src/components/auth/ProfileSetupDialog.tsx": "Modal dialog for first-time user profile setup, collecting user name with form validation.",
   "frontend/src/components/auth/RequireAuth.tsx": "Authentication guard component that shows login screen for unauthenticated users and triggers profile setup for new users.",
-  "frontend/src/components/app/AppShell.tsx": "Main layout component with header, logo, navigation tabs, user greeting, and footer with attribution and social links.",
+  "frontend/src/components/app/AppShell.tsx": "Main layout component with header, logo, navigation tabs, user greeting, and footer with attribution and non-clickable social icons for visual presentation.",
   "frontend/src/components/app/QueryState.tsx": "Reusable UI components for loading states, error states, and empty states with consistent styling.",
   "frontend/src/components/caffeine/EntryFormDialog.tsx": "Dialog form for adding caffeine entries with preset selection, drink name, and amount inputs.",
   "frontend/src/components/caffeine/PresetManager.tsx": "Component for managing drink presets with add functionality and list display.",
   "frontend/src/components/caffeine/TrendChart7d.tsx": "SVG-based bar chart component displaying 7-day caffeine consumption trends with daily limit indicator.",
-  "frontend/src/pages/DashboardPage.tsx": "Dashboard page showing today's caffeine total, remaining amount, hero image, quick stats cards, and recent entries with quick-add functionality.",
-  "frontend/src/pages/LogPage.tsx": "Log page displaying all caffeine entries grouped by date with delete functionality and empty state illustration.",
+  "frontend/src/pages/DashboardPage.tsx": "Dashboard page showing today's caffeine total with visual progress indicator, remaining amount, hero image, quick stats cards, recent entries, and auto-open entry dialog support via URL parameter.",
+  "frontend/src/pages/LogPage.tsx": "Log page displaying all caffeine entries grouped by date with delete functionality, empty state illustration, and navigation to Dashboard with auto-open signal when adding first entry.",
   "frontend/src/pages/InsightsPage.tsx": "Insights page with 7-day statistics (total, average, days over limit) and trend chart visualization.",
-  "frontend/src/pages/SettingsPage.tsx": "Settings page for updating daily caffeine limit, managing drink presets, and displaying health guidelines."
+  "frontend/src/pages/SettingsPage.tsx": "Settings page for updating daily caffeine limit, managing drink presets, and displaying health guidelines.",
+  "frontend/src/utils/urlParams.ts": "Utility functions for parsing and managing URL parameters including hash-based routing support, session storage helpers, and one-time parameter read-and-clear functionality."
 }

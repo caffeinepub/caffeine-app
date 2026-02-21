@@ -1,128 +1,77 @@
 {
   "kind": "build_request",
-  "title": "Build a Caffeine Intake Tracker App",
+  "title": "Polish UX: better empty-state actions, dashboard progress indicator, and footer link cleanup",
   "priority": "normal",
   "requirements": [
     {
       "id": "REQ-1",
-      "text": "Create the core app UX for a personal caffeine tracker with the following pages: (1) Dashboard showing today’s total caffeine (mg), remaining to daily limit, and a quick-add control; (2) Log page listing recent intake entries with edit/delete; (3) Insights page showing a simple 7-day trend chart; (4) Settings page to configure a daily caffeine limit (mg) and default drink presets.",
+      "text": "Make the Log page empty-state primary action actually help the user add their first entry by navigating to the Dashboard and automatically opening the Add Entry dialog.",
       "target": "frontend",
       "source": {
         "messageIds": [
-          "msg-2"
+          "msg-1"
         ],
         "quotes": [
-          "Caffeine app to create"
+          "Yes you can improve it"
         ]
       },
       "acceptanceCriteria": [
-        "App has Dashboard, Log, Insights, and Settings views reachable via a consistent navigation UI.",
-        "Dashboard shows computed total caffeine for the selected day (default: today) and remaining amount based on the saved daily limit.",
-        "User can add a caffeine entry with at least: drink name, caffeine mg, timestamp; entries appear in the Log page.",
-        "User can edit and delete an existing entry from the Log page.",
-        "Insights page displays a 7-day chart of total mg/day (basic bar or line chart is acceptable).",
-        "Settings allows updating daily limit (mg) and managing a small list of drink presets (name + mg) used by quick-add.",
-        "All user-facing text is in English."
+        "When there are zero entries, clicking the empty-state button on /log routes the user to / (Dashboard).",
+        "After navigation from the Log empty state, the Add Entry dialog opens automatically without additional clicks.",
+        "The auto-open behavior triggers only once and does not keep re-opening on subsequent renders/navigation.",
+        "No changes are made to immutable hook files (e.g., frontend/src/hooks/useInternetIdentity.ts[x], frontend/src/hooks/useActor.ts, frontend/src/main.tsx)."
       ]
     },
     {
       "id": "REQ-2",
-      "text": "Implement authenticated, per-user data storage for caffeine tracking using Internet Identity principal as the user key. Persist: caffeine intake entries, drink presets, and user settings (daily limit). Provide backend methods to create/read/update/delete entries and presets and to read/update settings.",
-      "target": "backend",
+      "text": "Improve the Dashboard’s readability by adding a clear visual indicator of daily limit usage (e.g., a progress bar or meter) and ensuring the over-limit state is visually distinct and accessible.",
+      "target": "frontend",
       "source": {
         "messageIds": [
-          "msg-2"
+          "msg-1"
         ],
         "quotes": [
-          "Caffeine app to create"
+          "Yes you can improve it"
         ]
       },
       "acceptanceCriteria": [
-        "All stored data is scoped to the authenticated caller’s principal; users cannot access each other’s data.",
-        "Backend exposes query/update methods to: list entries (with optional date range), add entry, update entry, delete entry; list presets, add preset, update preset, delete preset; get settings, update settings.",
-        "Data persists across page reloads and canister calls (stable storage as appropriate for Motoko)."
+        "Dashboard shows a visual percent-used indicator for today’s caffeine intake relative to the daily limit.",
+        "The indicator has a clear over-limit style (e.g., destructive color treatment) when todayTotal > dailyLimit.",
+        "User-facing text remains in English and existing metrics (today total, daily limit, remaining) remain correct."
       ]
     },
     {
       "id": "REQ-3",
-      "text": "Connect the frontend to the backend using React Query for loading/mutating entries, presets, and settings, including loading states, empty states, and error handling. Ensure the UI updates immediately after mutations (invalidate/refetch or optimistic updates).",
-      "target": "both",
-      "source": {
-        "messageIds": [
-          "msg-2"
-        ],
-        "quotes": [
-          "Caffeine app to create"
-        ]
-      },
-      "acceptanceCriteria": [
-        "All reads are performed via React Query with visible loading indicators.",
-        "All mutations (add/edit/delete) show progress and handle errors with an on-screen message.",
-        "After any mutation, the relevant lists/totals/charts update without requiring a manual page refresh."
-      ]
-    },
-    {
-      "id": "REQ-4",
-      "text": "Apply a coherent visual theme suitable for a caffeine/coffee wellness tracker: warm espresso/cream palette, clean typography, and card-based layout with clear hierarchy. Keep styling consistent across all pages and components.",
+      "text": "Clean up footer social icons so they are not dead links: replace placeholder href=\"#\" links with a non-clickable/disabled presentation or remove them, while keeping the footer layout visually balanced.",
       "target": "frontend",
       "source": {
         "messageIds": [
-          "msg-2"
+          "msg-1"
         ],
         "quotes": [
-          "Caffeine app to create"
+          "Yes you can improve it"
         ]
       },
       "acceptanceCriteria": [
-        "App uses a consistent warm (espresso/cream) theme across navigation, cards, forms, and charts.",
-        "Layout is responsive and usable on mobile and desktop.",
-        "Interactive elements (buttons/inputs) have clear hover/focus states."
-      ]
-    },
-    {
-      "id": "REQ-5",
-      "text": "Add and use generated static image assets for the app’s branding and empty states. Store them under frontend/public/assets/generated and reference them directly from the frontend.",
-      "target": "frontend",
-      "source": {
-        "messageIds": [
-          "msg-2"
-        ],
-        "quotes": [
-          "Caffeine app to create"
-        ]
-      },
-      "acceptanceCriteria": [
-        "Generated images exist in frontend/public/assets/generated and are loaded via static paths from the frontend.",
-        "At minimum: a small logo is shown in the app header/navigation, and an empty-state illustration is shown when there are no entries."
+        "Footer no longer contains anchor tags that navigate to \"#\" when clicked.",
+        "Footer remains visually consistent with the existing warm theme and layout.",
+        "No console errors or accessibility regressions are introduced by the footer change."
       ]
     }
   ],
   "constraints": [
-    "Backend must remain a single Motoko actor (all logic in backend/main.mo).",
-    "Do not edit files under frontend immutable paths (e.g., frontend/src/hooks/useInternetIdentity.ts(x), frontend/src/hooks/useActor.ts, frontend/src/main.tsx, frontend/src/components/ui/*); compose them from app code instead.",
-    "Use Internet Identity for authentication; no third-party auth providers."
+    "Backend must remain single-actor (all Motoko logic in backend/main.mo).",
+    "Do not edit files under frontend immutablePaths: frontend/src/hooks/useInternetIdentity.ts, frontend/src/hooks/useInternetIdentity.tsx, frontend/src/hooks/useActor.ts, frontend/src/main.tsx, and anything in frontend/src/components/ui (compose instead).",
+    "Use English for any user-facing text."
   ],
   "nonGoals": [
-    "No external health integrations (Apple Health, Google Fit) or wearable integrations.",
-    "No push notifications, email, SMS, or real-time WebSocket features.",
-    "No external databases or third-party analytics."
+    "Do not add new authentication providers (Internet Identity only).",
+    "Do not add real-time features (e.g., WebSockets).",
+    "Do not introduce new backend storage schemas or migrations unless strictly required for the UX improvements above.",
+    "Do not add new pages beyond Dashboard/Log/Insights/Settings."
   ],
   "imageRequirements": {
-    "required": [
-      "Minimal coffee-bean + cup logo mark, flat vector style, warm espresso/cream palette (caffeine-logo.dim_512x512.png)",
-      "Cozy coffee-themed hero illustration with abstract shapes, no text, warm palette (caffeine-hero.dim_1600x900.png)",
-      "Empty state illustration of a small cup and checklist, minimal flat style, warm palette (caffeine-empty-state.dim_1200x800.png)"
-    ],
+    "required": [],
     "edits": []
-  },
-  "userProfileUpdate": {
-    "goalsToAdd": [],
-    "goalsToRemove": [],
-    "preferencesToAdd": [],
-    "preferencesToRemove": [],
-    "miscToAdd": [],
-    "miscToRemove": [],
-    "fieldsToSet": {},
-    "fieldsToDelete": []
   }
 }

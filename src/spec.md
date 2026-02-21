@@ -1,13 +1,11 @@
 # Specification
 
 ## Summary
-**Goal:** Build an authenticated, per-user caffeine intake tracker with a warm coffee-themed UI, covering daily tracking, entry management, basic insights, and configurable limits/presets.
+**Goal:** Polish the frontend UX by making empty states more actionable, improving Dashboard readability with a daily limit usage indicator, and removing dead footer links.
 
 **Planned changes:**
-- Create frontend pages: Dashboard (today’s total, remaining to limit, quick-add), Log (recent entries with edit/delete), Insights (7-day trend chart), Settings (daily limit + drink presets).
-- Implement Motoko backend (single actor) with Internet Identity–scoped storage for entries, presets, and settings, including CRUD methods and stable persistence.
-- Connect frontend to backend using React Query for all reads/mutations with loading/empty/error states and automatic UI refresh after changes.
-- Apply a consistent espresso/cream visual theme with responsive, card-based layout and clear interaction states.
-- Add generated static branding/empty-state images under `frontend/public/assets/generated` and use them in the header and empty-entry views.
+- Update the Log page empty-state primary action to route to the Dashboard and auto-open the Add Entry dialog once after navigation.
+- Add a clear visual daily limit usage indicator on the Dashboard (e.g., progress/meter) with an accessible, visually distinct over-limit state when today’s intake exceeds the daily limit.
+- Remove or disable footer social icons/links that currently navigate to “#”, while keeping the footer layout balanced and consistent with the warm theme.
 
-**User-visible outcome:** Users can sign in with Internet Identity, log and manage caffeine entries, see today’s total and remaining allowance, view a simple 7-day intake chart, and adjust daily limits and drink presets; the app includes branded visuals and clear empty/loading/error states.
+**User-visible outcome:** Users can go from an empty Log directly to adding their first entry on the Dashboard, see at-a-glance how much of their daily caffeine limit they’ve used (including a clear over-limit state), and the footer no longer contains dead social links.

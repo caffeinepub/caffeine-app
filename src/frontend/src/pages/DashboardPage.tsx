@@ -1,16 +1,29 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import { Progress } from '@/components/ui/progress';
 import { Plus, Coffee, TrendingUp, AlertCircle } from 'lucide-react';
 import { useGetUserData, useAddCaffeineEntry } from '../hooks/useQueries';
 import { LoadingState, ErrorState } from '../components/app/QueryState';
 import EntryFormDialog from '../components/caffeine/EntryFormDialog';
 import { toast } from 'sonner';
+import { useSearch, useNavigate } from '@tanstack/react-router';
 
 export default function DashboardPage() {
   const { data: userData, isLoading, error } = useGetUserData();
   const addEntry = useAddCaffeineEntry();
   const [showEntryDialog, setShowEntryDialog] = useState(false);
+  const search = useSearch({ from: '/' });
+  const navigate = useNavigate();
+
+  // Handle auto-open from URL parameter (one-time only)
+  useEffect(() => {
+    if (search && typeof search === 'object' && 'openEntry' in search && search.openEntry === 'true') {
+      setShowEntryDialog(true);
+      // Clear the parameter from URL to prevent re-triggering
+      navigate({ to: '/', search: {}, replace: true });
+    }
+  }, [search, navigate]);
 
   const todayStart = new Date();
   todayStart.setHours(0, 0, 0, 0);
@@ -25,7 +38,8 @@ export default function DashboardPage() {
   const todayTotal = todayEntries.reduce((sum, entry) => sum + Number(entry.amountMg), 0);
   const dailyLimit = Number(userData?.settings.dailyLimitMg || 400);
   const remaining = Math.max(0, dailyLimit - todayTotal);
-  const percentUsed = dailyLimit > 0 ? (todayTotal / dailyLimit) * 100 : 0;
+  const percentUsed = dailyLimit > 0 ? Math.min((todayTotal / dailyLimit) * 100, 100) : 0;
+  const isOverLimit = todayTotal > dailyLimit;
 
   const handleAddEntry = async (data: { drinkName: string; amountMg: number; consumptionTime: number }) => {
     try {
@@ -59,6 +73,40 @@ export default function DashboardPage() {
           </div>
         </div>
       </div>
+
+      <Card className="shadow-warm">
+        <CardHeader>
+          <CardTitle className="font-serif text-xl">Daily Limit Progress</CardTitle>
+          <CardDescription>
+            {isOverLimit 
+              ? `You've exceeded your daily limit by ${todayTotal - dailyLimit}mg`
+              : `${remaining}mg remaining of your ${dailyLimit}mg daily limit`
+            }
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-3">
+          <div className="flex items-center justify-between text-sm">
+            <span className="text-muted-foreground">Today's intake</span>
+            <span className="font-semibold">{todayTotal}mg / {dailyLimit}mg</span>
+          </div>
+          <Progress 
+            value={percentUsed} 
+            className={`h-3 ${isOverLimit ? '[&>div]:bg-destructive' : ''}`}
+            aria-label={`Daily caffeine usage: ${percentUsed.toFixed(0)}%`}
+          />
+          <div className="flex items-center justify-between text-xs">
+            <span className={isOverLimit ? 'text-destructive font-medium' : 'text-muted-foreground'}>
+              {percentUsed.toFixed(0)}% used
+            </span>
+            {isOverLimit && (
+              <span className="text-destructive font-medium flex items-center gap-1">
+                <AlertCircle className="h-3 w-3" />
+                Over limit
+              </span>
+            )}
+          </div>
+        </CardContent>
+      </Card>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <Card className="shadow-warm">
